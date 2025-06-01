@@ -15,6 +15,7 @@ Tone Writing Assistant is a smart, AI-powered tool designed to analyse the tone 
 - ✍️ Text Rewriting using **Hugging Face Transformers (T5 Paraphrase)**
 - 🌐 User Interface built with **Streamlit**
 - 🎯 Supports tones like `Formal`, `Casual`, `Friendly`, `Assertive`, and `Professional`
+- 🚀 Model deployed using **render.**
 
 ---
 
