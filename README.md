@@ -6,5 +6,12 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 ## 🔍 Overview
-Tone Assistant is an AI-powered writing assistant that helps you set the right tone for your emails and texts. 
+Tone Assistant is a smart, AI-powered tool designed to analyse the tone of your text and help you rewrite it to match a desired tone. Inspired by tools like Grammarly, this assistant is ideal for improving writing style, consistency, and emotional tone in emails, reports, essays, or social media posts.
 
+---
+
+## 🚀 Features
+- 🔍 Tone Detection using TextBlob (polarity & subjectivity)
+- ✍️ Text Rewriting using Hugging Face Transformers (T5 Paraphrase)
+- 🌐 User Interface built with Streamlit
+- 🎯 Supports tones like Formal, Casual, Friendly, Assertive, and Professional
