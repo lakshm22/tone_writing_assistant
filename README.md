@@ -15,3 +15,31 @@ Tone Writing Assistant is a smart, AI-powered tool designed to analyse the tone 
 - ✍️ Text Rewriting using **Hugging Face Transformers (T5 Paraphrase)**
 - 🌐 User Interface built with **Streamlit**
 - 🎯 Supports tones like Formal, Casual, Friendly, Assertive, and Professional
+
+---
+
+## 🔧 Tech Stack
+- **Language:** Python 3.10.16
+- **Libraries:** `Streamlit`, `TextBlob`, `Hugging Face Transformers`, `PyTorch`
+- **Platform:** Anaconda Navigator (Jupyter Notebook)
+- **Version Control:** GitHub
+
+---
+
+## 📁 Project Structure
+tone-writing-assistant/
+│
+├── app.py               
+├── tone_helper.py       
+├── requirements.txt     
+├── .gitignore           
+└── README.md            
+
+---
+
+## 📄 License
+Licensed under the **MIT License.**
+
+---
+
+*"Made with 🤍 by Laksh"*
