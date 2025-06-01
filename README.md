@@ -28,12 +28,11 @@ Tone Writing Assistant is a smart, AI-powered tool designed to analyse the tone 
 
 ## 📁 Project Structure
 tone-writing-assistant/
-│
-├── app.py               
-├── tone_helper.py       
-├── requirements.txt     
-├── .gitignore           
-└── README.md            
+├── .gitignore
+├── LICENSE
+├── README.md      
+├── requirements.txt            
+└── tone_writing_assistant.py          
 
 ---
 
