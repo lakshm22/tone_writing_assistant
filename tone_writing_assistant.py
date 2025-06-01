@@ -1,5 +1,7 @@
 from textblob import TextBlob
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
+from transformers import AutoModelForSeq2SeqLM, T5Tokenizer, pipeline
+tokenizer = T5Tokenizer.from_pretrained(model_name)
+
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
