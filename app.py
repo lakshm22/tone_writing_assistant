@@ -26,13 +26,11 @@ def rewrite_text(text, tone):
     output = paraphraser(prompt, max_length=60, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text']
     return output
 
-
 # Streamlit app interactive dashboard
 st.set_page_config(page_title="Tone Writing Assistant", layout="centered")
 st.title("📝 Tone Writing Assistant")
 st.write("Improve and rewrite your text to match your preferred tone.")
 user_input = st.text_area("Enter your text here:", height=200)
-    
     
 if user_input:
     if st.button("Analyze Tone"):
@@ -40,9 +38,7 @@ if user_input:
         st.markdown(f"**Polarity:** {polarity:.2f} (negative to positive)")
         st.markdown(f"**Subjectivity:** {subjectivity:.2f} (objective to subjective)")
     tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
-       
-        
-        
+    
     if st.button("Rewrite in Selected Tone"):
         with st.spinner("Rewriting your text..."):
             result = rewrite_text(user_input, tone)
