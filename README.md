@@ -15,7 +15,7 @@
 - ✍️ Text Rewriting using **Hugging Face Transformers (T5 Paraphrase)**
 - 🌐 User Interface built with **Streamlit**
 - 🎯 Supports tones like `Formal`, `Casual`, `Friendly`, `Assertive`, and `Professional`
-- 🚀 Model deployed using **render.**
+- 🚀 Model deployed using **Streamlit.**
 
 ---
 
