@@ -12,14 +12,20 @@ def correct_grammar(text):
     matches = tool.check(text)
     return language_tool_python.utils.correct(text, matches)
 
-def get_sentiment(text):
-    blob = TextBlob(text)
-    return blob.sentiment
+def simple_sentence_split(text):
+    import re
+    # Split on period, question mark, exclamation mark followed by space or end of string
+    sentences = re.split(r'(?<=[.!?]) +', text)
+    return [s.strip() for s in sentences if s.strip()]
 
 def simplify_text(text):
-    blob = TextBlob(text)
-    simplified = ". ".join([str(sentence.correct()) for sentence in blob.sentences])
-    return simplified
+    sentences = simple_sentence_split(text)
+    simplified_sentences = []
+    for sentence in sentences:
+        # Using TextBlob just for spelling correction on each sentence
+        corrected = str(TextBlob(sentence).correct())
+        simplified_sentences.append(corrected)
+    return ". ".join(simplified_sentences)
 
 def get_readability_scores(text):
     return {
