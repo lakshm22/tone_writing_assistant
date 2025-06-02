@@ -28,8 +28,8 @@ def rewrite_text(text, tone):
 
 # Streamlit app interactive dashboard
 st.set_page_config(page_title="Text Enhancer", layout="centered")
-st.title("Tone-Aware Text Enhancer!")
-st.write("Improve and rewrite your text to match your preferred tone.")
+st.title("Tone-Aware Text Enhancer")
+st.write("Improve and rewrite your text to match your preferred tone!")
 user_input = st.text_area("Enter your text here:", height=200)
     
 if user_input:
