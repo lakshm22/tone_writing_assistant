@@ -30,7 +30,7 @@ def get_readability_scores(text):
     }
 
 st.set_page_config(page_title="SmartText Enhancer", layout="wide")
-st.title("SmartText Enhancer")
+st.title("Smart Text Enhancer")
 st.markdown("Enhance your writing with grammar correction, simplification, and readability analysis!")
 
 text = st.text_area("✍️ Enter your text here:", height=250)
