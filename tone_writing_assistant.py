@@ -5,7 +5,7 @@ from transformers import pipeline
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
-model_name = "google/flan-t5-base"
+model_name = "Vamsi/T5_Paraphrase_Paws"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
@@ -41,4 +41,3 @@ if user_input:
         output = paraphraser(prompt, max_length=100)[0]['generated_text']
     st.markdown("### ✨ Rewritten Text")
     st.success(output)
-
