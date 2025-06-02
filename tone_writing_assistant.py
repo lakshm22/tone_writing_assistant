@@ -2,11 +2,11 @@ from textblob import TextBlob
 from transformers import AutoModelForSeq2SeqLM
 from transformers import T5Tokenizer
 from transformers import pipeline
-tokenizer = T5Tokenizer.from_pretrained(model_name)
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
 model_name = "Vamsi/T5_Paraphrase_Paws"
+tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
 tokenizer = T5Tokenizer.from_pretrained(model_name)
