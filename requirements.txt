@@ -5,3 +5,7 @@ textblob
 sentencepiece
 python-dotenv
 requests
+spacy
+textstat
+languagetool
+nltk
