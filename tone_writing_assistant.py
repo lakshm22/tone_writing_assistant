@@ -5,7 +5,7 @@ from transformers import pipeline
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
-model_name = "google/pegasus-xsum"
+model_name = "declare-lab/flan-alpaca-large
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
@@ -40,4 +40,5 @@ if user_input:
         prompt = f"Make this text sound more {tone.lower()}:\n{user_input}"
         output = paraphraser(prompt, max_length=100)[0]['generated_text']
     st.markdown("### ✨ Rewritten Text")
-    st.success(output)
+    st.success(output = model(prompt, max_length=100, do_sample=True, top_k=50, top_p=0.95, temperature=0.9)
+)
