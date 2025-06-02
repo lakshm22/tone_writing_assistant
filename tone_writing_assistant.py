@@ -1,5 +1,5 @@
 from textblob import TextBlob
-from transformers import AutoModelForSeq2SeqLM
+from transformers import T5ForConditionalGeneration
 from transformers import T5Tokenizer
 from transformers import pipeline
 import streamlit as st
@@ -11,7 +11,7 @@ tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
 tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
 
 # Pipeline creation
 paraphraser = pipeline("text2text-generation", model=model, tokenizer=tokenizer)
