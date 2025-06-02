@@ -5,7 +5,7 @@ from transformers import pipeline
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
-model_name = "declare-lab/flan-alpaca-large
+model_name = "declare-lab/flan-alpaca-large"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
