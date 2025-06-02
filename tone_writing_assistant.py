@@ -1,9 +1,6 @@
 import streamlit as st
-from textblob import TextBlob
 import language_tool_python
 import textstat
-import nltk
-nltk.download('punkt')
 
 # Use the public API (no Java needed)
 tool = language_tool_python.LanguageToolPublicAPI('en-US')
