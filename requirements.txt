@@ -1,5 +1,5 @@
-streamlit
-textblob
-transformers
+streamlit>=1.31.0
+transformers>=4.38.2
 torch
+textblob
 sentencepiece
