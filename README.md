@@ -29,6 +29,7 @@
 
 ## 📁 Project Structure
 tone-writing-assistant/
+├── .streamlit
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
