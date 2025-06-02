@@ -4,3 +4,4 @@ torch
 textblob
 sentencepiece
 python-dotenv
+requests
