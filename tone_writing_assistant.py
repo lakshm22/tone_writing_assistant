@@ -1,55 +1,46 @@
-import streamlit as st
 from textblob import TextBlob
-import language_tool_python
-import textstat
+from transformers import T5ForConditionalGeneration
+from transformers import T5Tokenizer
+from transformers import pipeline
+import streamlit as st
 
-# Use the public API (no Java needed)
-tool = language_tool_python.LanguageTool('en-US', remote_server='https://api.languagetool.org/v2/check')
+# Loading paraphrasing model using Hugging Face Transformer
+model_name = "prithivida/parrot_paraphraser_on_T5"
+tokenizer = T5Tokenizer.from_pretrained(model_name)
 
+# Loading model and tokeniser separately
+tokenizer = T5Tokenizer.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
 
-def correct_grammar(text):
-    matches = tool.check(text)
-    return language_tool_python.utils.correct(text, matches)
+# Pipeline creation
+paraphraser = pipeline("text2text-generation", model=model, tokenizer=tokenizer)
 
-def correct_text(text):
+def detect_sentiment(text):
     blob = TextBlob(text)
-    return str(blob.correct())
+    polarity = blob.sentiment.polarity
+    subjectivity = blob.sentiment.subjectivity
+    return polarity, subjectivity
 
-def analyze_sentiment(text):
-    blob = TextBlob(text)
-    return blob.sentiment
+def rewrite_text(text, tone):
+    prompt = f"Rewrite the following text in a {tone.lower()} tone: {text}"
+    output = paraphraser(prompt, max_length=60, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text']
+    return output
 
-def split_sentences(text):
-    blob = TextBlob(text)
-    return [str(sentence) for sentence in blob.sentences]
-
-# Streamlit UI
-st.set_page_config(page_title="SmartText Enhancer", layout="wide")
-st.title("Smart Text Enhancer")
-st.markdown("Enhance your writing with grammar correction, simplification, and readability analysis!")
-
-text = st.text_area("✍️ Enter your text here:", height=250)
-
-if st.button("Enhance Text"):
-    if not text.strip():
-        st.warning("Please enter some text to enhance.")
-    else:
-        st.subheader("✅ Corrected Grammar")
-        corrected = correct_grammar(text)
-        st.write(corrected)
-
-        st.subheader("🪄 Simplified Text")
-        simplified = simplify_text(corrected)
-        st.write(simplified)
-
-        st.subheader("📊 Readability Scores")
-        scores = get_readability_scores(simplified)
-        for name, score in scores.items():
-            st.markdown(f"**{name}:** {score:.2f}")
-
-        st.subheader("🔍 Sentiment Analysis")
-        sentiment = get_sentiment(text)
-        st.markdown(f"**Polarity:** {sentiment.polarity:.2f}")
-        st.markdown(f"**Subjectivity:** {sentiment.subjectivity:.2f}")
-
-        st.success("Enhancement Complete!")
+# Streamlit app interactive dashboard
+st.set_page_config(page_title="Tone Writing Assistant", layout="centered")
+st.title("📝 Tone Writing Assistant")
+st.write("Improve and rewrite your text to match your preferred tone.")
+user_input = st.text_area("Enter your text here:", height=200)
+    
+if user_input:
+    if st.button("Analyze Tone"):
+        polarity, subjectivity = detect_sentiment(user_input)
+        st.markdown(f"**Polarity:** {polarity:.2f} (negative to positive)")
+        st.markdown(f"**Subjectivity:** {subjectivity:.2f} (objective to subjective)")
+    tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
+    
+    if st.button("Rewrite in Selected Tone"):
+        with st.spinner("Rewriting your text..."):
+            result = rewrite_text(user_input, tone)
+        st.markdown("### ✨ Rewritten Text")
+        st.success(result)
