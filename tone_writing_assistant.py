@@ -5,7 +5,7 @@ from transformers import pipeline
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
-model_name = "prithivida/parrot_paraphraser_on_T5"
+model_name = "google/flan-t5-large"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
@@ -20,6 +20,11 @@ def detect_sentiment(text):
     polarity = blob.sentiment.polarity
     subjectivity = blob.sentiment.subjectivity
     return polarity, subjectivity
+
+def rewrite_text(text, tone):
+    prompt = f"Rewrite the following sentence in a {tone.lower()} tone:\n\n{text}"
+    output = paraphraser(prompt, max_length=150, do_sample=True, top_p=0.92, top_k=50)[0]['generated_text']
+    return output
 
 
 # Streamlit app interactive dashboard
@@ -36,8 +41,7 @@ if user_input:
     tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
     
     if st.button("Rewrite in Selected Tone"):
-        with st.spinner("Rewriting your text..."):
-            prompt = f"Make this text sound more {tone.lower()}:\n{user_input}"
-            output = paraphraser(prompt, max_length=100, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text'] 
-            st.markdown("### ✨ Rewritten Text")
-            st.success(output)
+    with st.spinner("Rewriting your text..."):
+        result = rewrite_text(user_input, tone)
+    st.markdown("### ✨ Rewritten Text")
+    st.success(result)
