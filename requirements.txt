@@ -7,5 +7,5 @@ python-dotenv
 requests
 spacy
 textstat
-languagetool
+language-tool-python
 nltk
