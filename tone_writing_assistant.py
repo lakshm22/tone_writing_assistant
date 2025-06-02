@@ -38,7 +38,6 @@ if user_input:
     if st.button("Rewrite in Selected Tone"):
         with st.spinner("Rewriting your text..."):
             prompt = f"Make this text sound more {tone.lower()}:\n{user_input}"
-            output = paraphraser(prompt, max_length=100)[0]['generated_text']
+            output = paraphraser(prompt, max_length=100, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text'] 
     st.markdown("### ✨ Rewritten Text")
-    st.success(output = model(prompt, max_length=100, do_sample=True, top_k=50, top_p=0.95, temperature=0.9)
-)
+    st.success(output)
