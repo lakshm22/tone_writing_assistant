@@ -1,46 +1,36 @@
-from textblob import TextBlob
-from transformers import T5ForConditionalGeneration
-from transformers import T5Tokenizer
-from transformers import pipeline
 import streamlit as st
+import language_tool_python
 
-# Loading paraphrasing model using Hugging Face Transformer
-model_name = "prithivida/parrot_paraphraser_on_T5"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
+# Initialize LanguageTool
+tool = language_tool_python.LanguageTool('en-US')
 
-# Loading model and tokeniser separately
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+def correct_text(text):
+    matches = tool.check(text)
+    corrected_text = language_tool_python.utils.correct(text, matches)
+    return matches, corrected_text
 
-# Pipeline creation
-paraphraser = pipeline("text2text-generation", model=model, tokenizer=tokenizer)
+# Streamlit App
+st.set_page_config(page_title="Mini Grammarly", layout="wide")
 
-def detect_sentiment(text):
-    blob = TextBlob(text)
-    polarity = blob.sentiment.polarity
-    subjectivity = blob.sentiment.subjectivity
-    return polarity, subjectivity
+st.title("📝 Mini Grammarly - Grammar & Spell Checker")
 
-def rewrite_text(text, tone):
-    prompt = f"Rewrite the following text in a {tone.lower()} tone: {text}"
-    output = paraphraser(prompt, max_length=60, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text']
-    return output
+text_input = st.text_area("Enter your text here:", height=200)
 
-# Streamlit app interactive dashboard
-st.set_page_config(page_title="Tone Writing Assistant", layout="centered")
-st.title("Tone Writing Assistant")
-st.write("Improve and rewrite your text to match your preferred tone!")
-user_input = st.text_area("Enter your text here:", height=200)
-    
-if user_input:
-    if st.button("Analyze Tone"):
-        polarity, subjectivity = detect_sentiment(user_input)
-        st.markdown(f"**Polarity:** {polarity:.2f} (negative to positive)")
-        st.markdown(f"**Subjectivity:** {subjectivity:.2f} (objective to subjective)")
-    tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
-    
-    if st.button("Rewrite in Selected Tone"):
-        with st.spinner("Rewriting your text..."):
-            result = rewrite_text(user_input, tone)
-        st.markdown("### ✨ Rewritten Text")
-        st.success(result)
+if st.button("Check Grammar"):
+    if text_input.strip():
+        with st.spinner("Analyzing..."):
+            matches, corrected_text = correct_text(text_input)
+
+        st.subheader("✅ Corrected Text:")
+        st.write(corrected_text)
+
+        if matches:
+            st.subheader("🛠 Suggestions:")
+            for match in matches:
+                st.markdown(f"- **{match.ruleIssueType.title()}**: {match.message}")
+                st.markdown(f"  - Suggestion: `{', '.join(match.replacements)}`")
+                st.markdown(f"  - Context: `{match.context}`")
+        else:
+            st.success("Your text is already perfect! 🎉")
+    else:
+        st.warning("Please enter some text to analyze.")
