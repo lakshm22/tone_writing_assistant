@@ -1,47 +1,62 @@
-from textblob import TextBlob
-from transformers import T5ForConditionalGeneration
-from transformers import T5Tokenizer
-from transformers import pipeline
 import streamlit as st
+from textblob import TextBlob
+import language_tool_python
+import textstat
 
-# Loading paraphrasing model using Hugging Face Transformer
-model_name = "google/flan-t5-large"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
+# Setup language tool
+tool = language_tool_python.LanguageTool('en-US')
 
-# Loading model and tokeniser separately
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+# Functions
+def correct_grammar(text):
+    matches = tool.check(text)
+    return language_tool_python.utils.correct(text, matches)
 
-# Pipeline creation
-paraphraser = pipeline("text2text-generation", model=model, tokenizer=tokenizer)
-
-def detect_sentiment(text):
+def get_sentiment(text):
     blob = TextBlob(text)
-    polarity = blob.sentiment.polarity
-    subjectivity = blob.sentiment.subjectivity
-    return polarity, subjectivity
+    return blob.sentiment
 
-def rewrite_text(text, tone):
-    prompt = f"Rewrite the following sentence in a {tone.lower()} tone:\n\n{text}"
-    output = paraphraser(prompt, max_length=150, do_sample=True, top_p=0.92, top_k=50)[0]['generated_text']
-    return output
+def simplify_text(text):
+    blob = TextBlob(text)
+    simplified = ". ".join([str(sentence.correct()) for sentence in blob.sentences])
+    return simplified
 
+def get_readability_scores(text):
+    return {
+        "Flesch Reading Ease": textstat.flesch_reading_ease(text),
+        "Flesch-Kincaid Grade": textstat.flesch_kincaid_grade(text),
+        "Gunning Fog Index": textstat.gunning_fog(text),
+        "SMOG Index": textstat.smog_index(text),
+        "Automated Readability Index": textstat.automated_readability_index(text),
+        "Dale-Chall Score": textstat.dale_chall_readability_score(text),
+    }
 
-# Streamlit app interactive dashboard
-st.set_page_config(page_title="Text Enhancer", layout="centered")
-st.title("Tone-Aware Text Enhancer")
-st.write("Improve and rewrite your text to match your preferred tone!")
-user_input = st.text_area("Enter your text here:", placeholder="prompt: Please rewrite the following sentence in a...", height=200)
-    
-if user_input:
-    if st.button("Analyze Tone"):
-        polarity, subjectivity = detect_sentiment(user_input)
-        st.markdown(f"**Polarity:** {polarity:.2f} (negative to positive)")
-        st.markdown(f"**Subjectivity:** {subjectivity:.2f} (objective to subjective)")
-    tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
-    
-    if st.button("Rewrite in Selected Tone"):
-    with st.spinner("Rewriting your text..."):
-        result = rewrite_text(user_input, tone)
-    st.markdown("### ✨ Rewritten Text")
-    st.success(result)
+# Streamlit UI
+st.set_page_config(page_title="SmartText Enhancer", layout="wide")
+st.title("📝 SmartText Enhancer")
+st.markdown("Enhance your writing with grammar correction, simplification, and readability analysis!")
+
+text = st.text_area("✍️ Enter your text here:", height=250)
+
+if st.button("🚀 Enhance Text"):
+    if not text.strip():
+        st.warning("Please enter some text to enhance.")
+    else:
+        st.subheader("✅ Corrected Grammar")
+        corrected = correct_grammar(text)
+        st.write(corrected)
+
+        st.subheader("🪄 Simplified Text")
+        simplified = simplify_text(corrected)
+        st.write(simplified)
+
+        st.subheader("📊 Readability Scores")
+        scores = get_readability_scores(simplified)
+        for name, score in scores.items():
+            st.markdown(f"**{name}:** {score:.2f}")
+
+        st.subheader("🔍 Sentiment Analysis")
+        sentiment = get_sentiment(text)
+        st.markdown(f"**Polarity:** {sentiment.polarity:.2f}")
+        st.markdown(f"**Subjectivity:** {sentiment.subjectivity:.2f}")
+
+        st.success("Enhancement Complete!")
