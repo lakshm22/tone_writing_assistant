@@ -41,7 +41,7 @@ def rewrite_text(text, tone):
 st.set_page_config(page_title="Text Enhancer", layout="centered")
 st.title("Tone-Aware Text Enhancer")
 st.write("Improve and rewrite your text to match your preferred tone!")
-user_input = st.text_area("Enter your text here:", height=200)
+user_input = st.text_area("Enter your text here:", placeholder="prompt: Please rewrite the following sentence in a...", height=200)
     
 if user_input:
     if st.button("Analyze Tone"):
