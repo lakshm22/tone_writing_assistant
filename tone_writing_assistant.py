@@ -5,7 +5,7 @@ from transformers import pipeline
 import streamlit as st
 
 # Loading paraphrasing model using Hugging Face Transformer
-model_name = "Vamsi/T5_Paraphrase_Paws"
+model_name = "google/pegasus-xsum"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # Loading model and tokeniser separately
