@@ -34,7 +34,7 @@ tone-writing-assistant/
 ├── LICENSE
 ├── README.md      
 ├── requirements.txt            
-└── tone_writing_assistant.py          
+└── app.py          
 
 ---
 
