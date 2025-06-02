@@ -29,12 +29,11 @@
 
 ## 📁 Project Structure
 tone-writing-assistant/
-├── .streamlit
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
 ├── requirements.txt            
-└── app.py          
+└── tone_writing_assistant.py          
 
 ---
 
