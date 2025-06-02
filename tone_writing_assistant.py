@@ -3,10 +3,9 @@ from textblob import TextBlob
 import language_tool_python
 import textstat
 
-# Setup language tool
-tool = language_tool_python.LanguageTool('en-US')
+# Use the public API (no Java needed)
+tool = language_tool_python.LanguageToolPublicAPI('en-US')
 
-# Functions
 def correct_grammar(text):
     matches = tool.check(text)
     return language_tool_python.utils.correct(text, matches)
@@ -30,14 +29,13 @@ def get_readability_scores(text):
         "Dale-Chall Score": textstat.dale_chall_readability_score(text),
     }
 
-# Streamlit UI
 st.set_page_config(page_title="SmartText Enhancer", layout="wide")
-st.title("📝 SmartText Enhancer")
+st.title("SmartText Enhancer")
 st.markdown("Enhance your writing with grammar correction, simplification, and readability analysis!")
 
 text = st.text_area("✍️ Enter your text here:", height=250)
 
-if st.button("🚀 Enhance Text"):
+if st.button("Enhance Text"):
     if not text.strip():
         st.warning("Please enter some text to enhance.")
     else:
