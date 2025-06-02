@@ -21,21 +21,6 @@ def detect_sentiment(text):
     subjectivity = blob.sentiment.subjectivity
     return polarity, subjectivity
 
-def rewrite_text(text, tone):
-    prompt = (
-        f"Rewrite the following sentence in a {tone.lower()} tone.\n\n"
-        f"Original: {text}\n"
-        f"{tone} Tone:"
-    )
-    output = paraphraser(
-        prompt,
-        max_length=100,
-        do_sample=True,
-        top_k=50,
-        top_p=0.95
-    )[0]['generated_text']
-    return output
-
 
 # Streamlit app interactive dashboard
 st.set_page_config(page_title="Text Enhancer", layout="centered")
@@ -51,7 +36,9 @@ if user_input:
     tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
     
     if st.button("Rewrite in Selected Tone"):
-        with st.spinner("Rewriting your text..."):
-            result = rewrite_text(user_input, tone)
-        st.markdown("### ✨ Rewritten Text")
-        st.success(result)
+    with st.spinner("Rewriting your text..."):
+        prompt = f"Make this text sound more {tone.lower()}:\n{user_input}"
+        output = paraphraser(prompt, max_length=100)[0]['generated_text']
+    st.markdown("### ✨ Rewritten Text")
+    st.success(output)
+
