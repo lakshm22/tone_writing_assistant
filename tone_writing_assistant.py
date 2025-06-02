@@ -4,7 +4,8 @@ import language_tool_python
 import textstat
 
 # Use the public API (no Java needed)
-tool = language_tool_python.LanguageToolPublicAPI('en-US')
+tool = language_tool_python.LanguageTool('en-US', remote_server='https://api.languagetool.org/v2/check')
+
 
 def correct_grammar(text):
     matches = tool.check(text)
