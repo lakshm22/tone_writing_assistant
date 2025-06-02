@@ -22,9 +22,20 @@ def detect_sentiment(text):
     return polarity, subjectivity
 
 def rewrite_text(text, tone):
-    prompt = f"Rewrite the following text in a {tone.lower()} tone: {text}"
-    output = paraphraser(prompt, max_length=60, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text']
+    prompt = (
+        f"Rewrite the following sentence in a {tone.lower()} tone.\n\n"
+        f"Original: {text}\n"
+        f"{tone} Tone:"
+    )
+    output = paraphraser(
+        prompt,
+        max_length=100,
+        do_sample=True,
+        top_k=50,
+        top_p=0.95
+    )[0]['generated_text']
     return output
+
 
 # Streamlit app interactive dashboard
 st.set_page_config(page_title="Text Enhancer", layout="centered")
