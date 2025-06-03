@@ -6,7 +6,9 @@ import torch
 st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
 
 st.title("Smart Writing Assistant")
-st.markdown("Refine your writing tone with the help of AI. Just enter your text, choose a target tone, and let the assistant rewrite it!")
+st.markdown(
+    "Refine your writing tone with the help of AI. Just enter your text, choose a target tone, and let the assistant rewrite it!"
+)
 
 # Load model and tokenizer once (cached)
 @st.cache_resource
@@ -20,10 +22,19 @@ model, tokenizer = load_model()
 # Tone rewriting function
 def rewrite_text(input_text, target_tone):
     prompt = f"Rewrite the following in a {target_tone} tone: {input_text}"
-    inputs = tokenizer(prompt, return_tensors="pt")
-    with torch.no_grad():
-        outputs = model.generate(**inputs, max_new_tokens=128)
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+    inputs = tokenizer(
+        prompt,
+        return_tensors="pt",
+        padding=True,
+        truncation=True,
+        max_length=512
+    )
+    try:
+        with torch.no_grad():
+            outputs = model.generate(**inputs, max_new_tokens=128)
+        return tokenizer.decode(outputs[0], skip_special_tokens=True)
+    except Exception as e:
+        return f"Error in rewriting text: {e}"
 
 # UI inputs
 input_text = st.text_area("Enter your original text:")
