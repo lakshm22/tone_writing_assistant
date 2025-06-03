@@ -32,8 +32,8 @@ tone-writing-assistant/
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
-├── requirements.txt            
-└── tone_writing_assistant.py          
+├── app.py         
+└── requirements.txt    
 
 ---
 
