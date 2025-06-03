@@ -12,7 +12,7 @@ st.markdown("Analyze the tone of your writing and rewrite it to match your desir
 # Load transformer model
 @st.cache_resource
 def load_model():
-    return pipeline("text2text-generation", model="google/flan-t5-small")
+    return pipeline("text2text-generation", model="google/flan-t5-small", device=-1)
 
 generator = load_model()
 
