@@ -28,7 +28,7 @@
 ---
 
 ## 📁 Project Structure
-tone-writing-assistant/
+mood-journal/
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
