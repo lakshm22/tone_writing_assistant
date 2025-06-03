@@ -41,8 +41,7 @@ def suggest_prompt_or_affirmation():
     ]
     affirmation = random.choice(affirmation_list)
     return random.choice(prompts), affirmation
-
-
+    
 # Streamlit UI Dashboard
 st.set_page_config(page_title="AI Mood Journal", page_icon="📝")
 st.title("AI Mood Journal")
@@ -70,7 +69,6 @@ if st.button("Analyze & Reflect"):
         st.write(f"_{affirmation}_")
     else:
         st.warning("Please enter some text to reflect on.")
-       
 
 # Sidebar contents
 st.sidebar.title("📖 About This Project – AI Mood Journal")
@@ -93,4 +91,3 @@ st.sidebar.write(
 )
 st.sidebar.markdown("---")
 st.sidebar.caption("Created with ❤️ by Lakshitha M")
-
