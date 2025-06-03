@@ -30,7 +30,8 @@ def rewrite_text(text, tone):
     return rewritten_text
 
 # Streamlit UI
-st.title("✍️ Tone Writing Assistant")
+st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
+st.title("Smart Writing Assistant")
 st.markdown("Rewrite your text to match a desired tone.")
 
 input_text = st.text_area("Enter your text here:", height=200)
