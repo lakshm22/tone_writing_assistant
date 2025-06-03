@@ -1,46 +1,59 @@
-from textblob import TextBlob
-from transformers import T5ForConditionalGeneration
-from transformers import T5Tokenizer
-from transformers import pipeline
 import streamlit as st
+from textblob import TextBlob
+from transformers import pipeline
 
-# Loading paraphrasing model using Hugging Face Transformer
-model_name = "t5-large"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
+# Set Streamlit page configuration
+st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
 
-# Loading model and tokeniser separately
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+# Title and subtitle
+st.title("Smart Writing Assistant")
+st.markdown("Analyze the tone of your writing and rewrite it to match your desired tone.")
 
-# Pipeline creation
-paraphraser = pipeline("text2text-generation", model=model, tokenizer=tokenizer)
+# Load transformer model
+@st.cache_resource
+def load_model():
+    return pipeline("text2text-generation", model="google/flan-t5-small")
 
-def detect_sentiment(text):
+generator = load_model()
+
+# Function to detect tone using TextBlob
+def detect_tone(text):
     blob = TextBlob(text)
     polarity = blob.sentiment.polarity
     subjectivity = blob.sentiment.subjectivity
-    return polarity, subjectivity
 
-def rewrite_text(text, tone):
-    prompt = f"Rewrite the following text in a {tone.lower()} tone: {text}"
-    output = paraphraser(prompt, max_length=60, do_sample=True, top_k=50, top_p=0.95)[0]['generated_text']
-    return output
+    if polarity > 0.5:
+        tone = "Joyful / Positive"
+    elif polarity < -0.3:
+        tone = "Angry / Negative"
+    else:
+        tone = "Neutral / Informative"
+    
+    return tone, polarity, subjectivity
 
-# Streamlit app interactive dashboard
-st.set_page_config(page_title="Tone Writing Assistant", layout="centered")
-st.title("Tone Writing Assistant")
-st.write("Improve and rewrite your text to match your preferred tone!")
-user_input = st.text_area("Enter your text here:", height=200)
-    
-if user_input:
-    if st.button("Analyze Tone"):
-        polarity, subjectivity = detect_sentiment(user_input)
-        st.markdown(f"**Polarity:** {polarity:.2f} (negative to positive)")
-        st.markdown(f"**Subjectivity:** {subjectivity:.2f} (objective to subjective)")
-    tone = st.selectbox("Choose the tone you want:", ["Formal", "Casual", "Friendly", "Assertive", "Professional"])
-    
-    if st.button("Rewrite in Selected Tone"):
-        with st.spinner("Rewriting your text..."):
-            result = rewrite_text(user_input, tone)
-        st.markdown("### ✨ Rewritten Text")
-        st.success(result)
+# Function to rewrite text using a given tone
+def rewrite_text(input_text, target_tone):
+    prompt = f"Rewrite the following in a {target_tone} tone: {input_text}"
+    result = generator(prompt, max_length=128, do_sample=True)
+    return result[0]['generated_text']
+
+# UI components
+input_text = st.text_area("✍️ Enter your text here:")
+target_tone = st.selectbox("🎭 Choose your desired tone:", 
+                           ["Formal", "Friendly", "Professional", "Persuasive", "Informative"])
+
+if st.button("Analyze & Rewrite"):
+    if input_text.strip():
+        # Detect tone
+        tone, polarity, subjectivity = detect_tone(input_text)
+        st.markdown("### 🔍 Detected Tone:")
+        st.write(f"**Tone**: {tone}")
+        st.write(f"**Polarity**: {polarity:.2f}")
+        st.write(f"**Subjectivity**: {subjectivity:.2f}")
+
+        # Rewrite text
+        st.markdown("### ✨ Rewritten Text:")
+        rewritten = rewrite_text(input_text, target_tone)
+        st.success(rewritten)
+    else:
+        st.warning("Please enter some text to analyze.")
