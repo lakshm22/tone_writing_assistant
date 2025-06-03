@@ -41,7 +41,3 @@ mood-journal/
 
 ## 📄 License
 Licensed under the **MIT License.**
-
----
-
-*"Made with 🤍 by Laksh"*
