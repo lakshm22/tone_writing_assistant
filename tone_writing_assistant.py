@@ -1,5 +1,5 @@
 import streamlit as st
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 from textblob import TextBlob
 import torch
 
@@ -13,8 +13,8 @@ st.markdown(
 # Load model and tokenizer once (cached)
 @st.cache_resource
 def load_model():
-    model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
-    tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+    model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small")
+    tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
     return model, tokenizer
 
 model, tokenizer = load_model()
