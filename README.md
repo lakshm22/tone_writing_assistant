@@ -6,7 +6,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 ## 🔍 Overview
-**AI Mood Journal** is a simple, calming Streamlit app that helps users reflect on their emotions. It detects the tone of your journal entry, rewrites it with a more positive or self-compassionate voice, and offers thoughtful journal prompts and affirmations to guide your healing and growth.
+[AI Mood Journal](https://mood-journal-yqtuyksw8kzrlcbr2wyjdy.streamlit.app/) is a simple, calming Streamlit app that helps users reflect on their emotions. It detects the tone of your journal entry, rewrites it with a more positive or self-compassionate voice, and offers thoughtful journal prompts and affirmations to guide your healing and growth.
 
 ---
 
