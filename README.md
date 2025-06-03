@@ -1,4 +1,4 @@
-# 🤖 Writing Assistant
+# 📔 AI Mood Journal
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-ff4b4b)
@@ -6,7 +6,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 ## 🔍 Overview
-[Tone-Aware Writing Assistant](https://tonewritingassistant-eew2qstzf6pgpqq84apxza.streamlit.app/) is a smart, AI-powered tool designed to analyse the tone of your text and help you rewrite it to match a desired tone. Inspired by tools like Grammarly, this assistant is ideal for improving writing style, consistency, and emotional tone in emails, reports, essays, or social media posts.
+[Tone-Aware Writing Assistant]() is a smart, AI-powered tool designed to analyse the tone of your text and help you rewrite it to match a desired tone. Inspired by tools like Grammarly, this assistant is ideal for improving writing style, consistency, and emotional tone in emails, reports, essays, or social media posts.
 
 ---
 
@@ -32,7 +32,7 @@ tone-writing-assistant/
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
-├── app.py         
+├── mj-app.py         
 └── requirements.txt    
 
 ---
