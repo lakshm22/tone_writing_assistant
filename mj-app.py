@@ -86,11 +86,19 @@ st.sidebar.write(
 
 st.sidebar.title("🛠 Built With")
 st.sidebar.write(
-    "Python, "
-    "Streamlit (UI Framework), "
-    "TextBlob (Sentiment Detection), "
-    "Pandas (CSV Handling), "
-    "Affirmation CSV Dataset (Customizable & Expandable)"
+    "- Python "
+)
+st.sidebar.write(
+    "- Streamlit (UI Framework), "
+)
+st.sidebar.write(
+    "- TextBlob (Sentiment Detection), "
+)
+st.sidebar.write(
+    "- Pandas (CSV Handling), "
+)
+st.sidebar.write(
+    "- Affirmation CSV Dataset (Customizable & Expandable)"
 )
 st.sidebar.markdown("---")
 st.sidebar.caption("Created with ❤️ by Lakshitha M")
