@@ -119,13 +119,13 @@ st.sidebar.write(
     "- Python "
 )
 st.sidebar.write(
-    "- Streamlit (UI Framework), "
+    "- Streamlit (UI Framework) "
 )
 st.sidebar.write(
-    "- TextBlob (Sentiment Detection), "
+    "- TextBlob (Sentiment Detection) "
 )
 st.sidebar.write(
-    "- Pandas (CSV Handling), "
+    "- Pandas (CSV Handling) "
 )
 st.sidebar.write(
     "- Affirmation CSV Dataset (Customizable & Expandable)"
