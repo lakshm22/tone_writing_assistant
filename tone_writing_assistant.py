@@ -2,16 +2,16 @@ import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 
-# Load model and tokenizer once
+# Always use CPU to avoid device issues
+device = torch.device("cpu")
+
+# Load tokenizer and model
 model_name = "t5-base"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+model.to(device)  # Send model to CPU
 
-# Set device properly
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
-
-# Function to rewrite text
+# Text rewriting function
 def rewrite_text(text, tone):
     prompt = f"Rewrite the following text in a {tone} tone:\n{text}"
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True).to(device)
@@ -29,7 +29,7 @@ def rewrite_text(text, tone):
     rewritten_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return rewritten_text
 
-# Streamlit UI
+# Streamlit app UI
 st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
 st.title("Smart Writing Assistant")
 st.markdown("Rewrite your text to match a desired tone.")
@@ -46,4 +46,4 @@ if st.button("Rewrite"):
         except Exception as e:
             st.error(f"Error: {str(e)}")
     else:
-        st.warning("Please enter text and select a tone.")
+        st.warning("Please enter some text and select a tone.")
