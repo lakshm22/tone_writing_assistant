@@ -32,7 +32,8 @@ tone-writing-assistant/
 ├── .gitignore
 ├── LICENSE
 ├── README.md      
-├── mj-app.py         
+├── mj-app.py 
+├── positive_affirmation.csv
 └── requirements.txt    
 
 ---
