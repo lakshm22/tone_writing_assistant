@@ -1,59 +1,48 @@
 import streamlit as st
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from textblob import TextBlob
-from transformers import pipeline
+import torch
 
-# Set Streamlit page configuration
 st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
 
-# Title and subtitle
 st.title("Smart Writing Assistant")
-st.markdown("Analyze the tone of your writing and rewrite it to match your desired tone.")
+st.markdown("Refine your writing tone with the help of AI. Just enter your text, choose a target tone, and let the assistant rewrite it!")
 
-# Load transformer model
+# Load model and tokenizer once (cached)
 @st.cache_resource
 def load_model():
-    return pipeline("text2text-generation", model="google/flan-t5-small", device=-1)
+    model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
+    tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+    return model, tokenizer
 
-generator = load_model()
+model, tokenizer = load_model()
 
-# Function to detect tone using TextBlob
-def detect_tone(text):
-    blob = TextBlob(text)
-    polarity = blob.sentiment.polarity
-    subjectivity = blob.sentiment.subjectivity
-
-    if polarity > 0.5:
-        tone = "Joyful / Positive"
-    elif polarity < -0.3:
-        tone = "Angry / Negative"
-    else:
-        tone = "Neutral / Informative"
-    
-    return tone, polarity, subjectivity
-
-# Function to rewrite text using a given tone
+# Tone rewriting function
 def rewrite_text(input_text, target_tone):
     prompt = f"Rewrite the following in a {target_tone} tone: {input_text}"
-    result = generator(prompt, max_length=128, do_sample=True)
-    return result[0]['generated_text']
+    inputs = tokenizer(prompt, return_tensors="pt")
+    with torch.no_grad():
+        outputs = model.generate(**inputs, max_new_tokens=128)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-# UI components
-input_text = st.text_area("✍️ Enter your text here:")
-target_tone = st.selectbox("🎭 Choose your desired tone:", 
-                           ["Formal", "Friendly", "Professional", "Persuasive", "Informative"])
+# UI inputs
+input_text = st.text_area("Enter your original text:")
+target_tone = st.selectbox(
+    "Select desired tone:",
+    ["Formal", "Informal", "Polite", "Professional", "Persuasive", "Empathetic"]
+)
 
-if st.button("Analyze & Rewrite"):
-    if input_text.strip():
-        # Detect tone
-        tone, polarity, subjectivity = detect_tone(input_text)
-        st.markdown("### 🔍 Detected Tone:")
-        st.write(f"**Tone**: {tone}")
-        st.write(f"**Polarity**: {polarity:.2f}")
-        st.write(f"**Subjectivity**: {subjectivity:.2f}")
-
-        # Rewrite text
-        st.markdown("### ✨ Rewritten Text:")
-        rewritten = rewrite_text(input_text, target_tone)
-        st.success(rewritten)
+if st.button("Rewrite"):
+    if input_text.strip() == "":
+        st.warning("Please enter some text first.")
     else:
-        st.warning("Please enter some text to analyze.")
+        rewritten = rewrite_text(input_text, target_tone)
+        st.subheader("🎯 Rewritten Text")
+        st.success(rewritten)
+
+        # Optional: show sentiment analysis
+        st.subheader("🧠 Sentiment Analysis")
+        blob = TextBlob(rewritten)
+        sentiment = blob.sentiment
+        st.write(f"**Polarity:** {sentiment.polarity:.2f} (−1 to +1)")
+        st.write(f"**Subjectivity:** {sentiment.subjectivity:.2f} (0 to 1)")
