@@ -1,48 +1,48 @@
 import streamlit as st
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from textblob import TextBlob
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 
-st.set_page_config(page_title="Smart Writing Assistant", layout="centered")
+# Load model and tokenizer once
+model_name = "t5-base"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-st.title("Smart Writing Assistant")
-st.markdown("Refine your writing tone with the help of AI. Just enter your text, choose a target tone, and let the assistant rewrite it!")
+# Set device properly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
-# Load model and tokenizer once (cached)
-@st.cache_resource
-def load_model():
-    model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
-    tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
-    return model, tokenizer
+# Function to rewrite text
+def rewrite_text(text, tone):
+    prompt = f"Rewrite the following text in a {tone} tone:\n{text}"
+    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True).to(device)
 
-model, tokenizer = load_model()
-
-# Tone rewriting function
-def rewrite_text(input_text, target_tone):
-    prompt = f"Rewrite the following in a {target_tone} tone: {input_text}"
-    inputs = tokenizer(prompt, return_tensors="pt")
     with torch.no_grad():
-        outputs = model.generate(**inputs, max_new_tokens=128)
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=128,
+            do_sample=True,
+            top_k=50,
+            top_p=0.95,
+            temperature=0.7
+        )
 
-# UI inputs
-input_text = st.text_area("Enter your original text:")
-target_tone = st.selectbox(
-    "Select desired tone:",
-    ["Formal", "Informal", "Polite", "Professional", "Persuasive", "Empathetic"]
-)
+    rewritten_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return rewritten_text
+
+# Streamlit UI
+st.title("✍️ Tone Writing Assistant")
+st.markdown("Rewrite your text to match a desired tone.")
+
+input_text = st.text_area("Enter your text here:", height=200)
+target_tone = st.selectbox("Choose target tone:", ["formal", "informal", "polite", "assertive", "empathetic"])
 
 if st.button("Rewrite"):
-    if input_text.strip() == "":
-        st.warning("Please enter some text first.")
+    if input_text and target_tone:
+        try:
+            rewritten = rewrite_text(input_text, target_tone)
+            st.subheader("Rewritten Text")
+            st.write(rewritten)
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
     else:
-        rewritten = rewrite_text(input_text, target_tone)
-        st.subheader("🎯 Rewritten Text")
-        st.success(rewritten)
-
-        # Optional: show sentiment analysis
-        st.subheader("🧠 Sentiment Analysis")
-        blob = TextBlob(rewritten)
-        sentiment = blob.sentiment
-        st.write(f"**Polarity:** {sentiment.polarity:.2f} (−1 to +1)")
-        st.write(f"**Subjectivity:** {sentiment.subjectivity:.2f} (0 to 1)")
+        st.warning("Please enter text and select a tone.")
