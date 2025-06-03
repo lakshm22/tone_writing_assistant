@@ -11,7 +11,6 @@ st.markdown(
 )
 
 # Load model and tokenizer once (cached)
-@st.cache_resource
 def load_model():
     model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small")
     tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
