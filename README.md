@@ -21,7 +21,7 @@
 
 ## 🔧 Tech Stack
 - **Language:** Python 3.10.16
-- **Libraries:** `Streamlit`, `TextBlob`, `Hugging Face Transformers`, `PyTorch`
+- **Libraries:** `Streamlit`, `TextBlob`, `Pandas`
 - **Platform:** Anaconda Navigator (Jupyter Notebook)
 - **Version Control:** GitHub
 
