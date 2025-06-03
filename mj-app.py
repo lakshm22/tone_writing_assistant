@@ -70,3 +70,27 @@ if st.button("Analyze & Reflect"):
         st.write(f"_{affirmation}_")
     else:
         st.warning("Please enter some text to reflect on.")
+       
+
+# Sidebar contents
+st.sidebar.title("📖 About This Project – AI Mood Journal")
+st.sidebar.write(
+    "AI Mood Journal is a self-reflection and emotional support tool designed to help users process their thoughts with kindness and clarity. Whether you're overwhelmed, anxious, hopeful, or just need to vent, the app listens without judgment and responds with gentle rewrites, empowering affirmations, and introspective prompts. "
+    "By combining natural language processing, sentiment analysis, and a simple Streamlit interface, this tool turns raw emotions into reflections that support healing, growth, and self-understanding. "
+)
+st.sidebar.title("🌿 Why It Matters")
+st.sidebar.write(
+    "We often write in moments of emotional intensity. This app honors that vulnerability—and then offers a shift in tone, helping you rewrite your inner dialogue with self-compassion. "
+)
+
+st.sidebar.title("🛠 Built With")
+st.sidebar.write(
+    "Python "
+    "Streamlit (UI Framework) "
+    "TextBlob (Sentiment Detection) "
+    "Pandas (CSV Handling) "
+    "Affirmation CSV Dataset (Customizable & Expandable) "
+)
+st.sidebar.markdown("---")
+st.sidebar.caption("Created with ❤️ by Lakshitha M")
+
