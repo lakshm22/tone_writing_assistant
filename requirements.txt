@@ -1,5 +1,5 @@
-streamlit>=1.31.0
-transformers>=4.38.2
+streamlit
+transformers
 torch
 textblob
 python-dotenv
