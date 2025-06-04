@@ -96,7 +96,7 @@ if st.button("Analyze & Reflect"):
         st.write(f"**{prompt}**")
 
         st.subheader("🌸 Affirmation")
-        st.write(f"{affirmation}")
+        st.write(f"_{affirmation}_")
     else:
         st.warning("Please enter some text to reflect on.")
 
