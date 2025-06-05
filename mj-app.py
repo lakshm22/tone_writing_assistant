@@ -76,7 +76,7 @@ def suggest_prompt_or_affirmation():
 st.set_page_config(page_title="AI Mood Journal", page_icon="📝")
 st.title("AI Mood Journal")
 st.markdown("Type what you’re feeling.")
-st.markdown("The app will reflect back a kind rewrite, mood insight, and a helpful prompt. ✨")
+st.markdown("The app will reflect back a kind rewrite, mood insight, and a helpful prompt! ✨")
 
 user_input = st.text_area("What's on your mind today?", height=200)
 
