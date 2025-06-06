@@ -36,8 +36,3 @@ mood-journal/
 ├── mj-app.py 
 ├── positive_affirmation.csv
 └── requirements.txt    
-
----
-
-## 📄 License
-Licensed under the **MIT License.**
