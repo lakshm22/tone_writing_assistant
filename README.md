@@ -26,13 +26,3 @@
 - **Platform:** Anaconda Navigator (Jupyter Notebook)
 - **Version Control:** GitHub
 
----
-
-## 📁 Project Structure
-mood-journal/
-├── .gitignore
-├── LICENSE
-├── README.md      
-├── mj-app.py 
-├── positive_affirmation.csv
-└── requirements.txt    
